@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node espruino",
     "static": "node static-server.js",
+    "build": "npm run build-js && npm run build-css",
+    "watch": "echo 'Run \"npm run watch-js\" and \"npm run watch-css\" in seperate tabs'",
     "build-js": "browserify static/src/main.js -t babelify --outfile static/bundle.js",
     "watch-js": "watchify static/src/main.js -t babelify --outfile static/bundle.js",
     "build-css": "postcss --config ./postcss-config.js --use postcss-import --use autoprefixer --output static/bundle.css static/css/main.css",
@@ -27,11 +29,15 @@
     "autoprefixer": "^6.0.3",
     "babelify": "~6.3.0",
     "browserify": "~11.2.0",
+    "normalize.css": "^3.0.3",
     "postcss": "^5.0.10",
     "postcss-cli": "^2.2.0",
     "postcss-import": "^7.1.0",
+    "ractive": "^0.7.3",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
-    "watchify": "~3.4.0"
+    "snapsvg": "^0.4.0",
+    "watchify": "~3.4.0",
+    "whatwg-fetch": "^0.10.0"
   }
 }

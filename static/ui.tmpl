@@ -1,0 +1,21 @@
+<div class="component">
+  <svg class="icon-timer">
+    <use xlink:href="icons/stopwatch.svg#stopwatch"></use>
+  </svg>
+  <span class="label visuallyhidden">Time</span>
+  <span class="value">
+    {{timeSecs}}<span class="unit">s</span>
+  </span>
+</div>
+<div class="component">
+  <span class="label iso">ISO</span>
+  <span class="value">{{iso}}</span>
+</div>
+<div class="component">
+  <span class="label">Light:</span>
+  <span class="value">{{ Math.floor(lightLevel) || '—' }}</span>
+</div>
+<div class="credits">
+  <h2>Icons</h2>
+  <p>Stopwatch by Edward Boatman from the Noun Project</p>
+</div>

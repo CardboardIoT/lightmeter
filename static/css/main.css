@@ -1,3 +1,49 @@
+@import 'normalize.css/normalize';
+
 body {
   font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+
+  color: #fff;
+  background: #333;
+}
+
+
+.component {
+  font-size: 4rem;
+  height: 33vh;
+  line-height: 33vh;
+  text-align: center;
+}
+
+.unit {
+  font-size: 2rem;
+}
+
+.component > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-timer {
+  width: 10vw;
+  height: 10vw;
+  fill: #fff;
+}
+
+.iso {
+  transform: rotate(-90deg);
+}
+
+
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }
