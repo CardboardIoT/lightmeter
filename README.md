@@ -1,6 +1,6 @@
 # lightmeter
 
-A simple Espruino/Arduino lightmeter and web UI.
+A simple Arduino lightmeter and web UI.
 
 ## Install
 
@@ -11,7 +11,13 @@ Tested with node.js v0.12. You may have problems with v4 and native modules.
 
 ## Circuit
 
-TBD.
+### Arduino
+
+Wire up your Arduino exactly as in [this diagram](https://github.com/rwaldron/johnny-five/blob/master/docs/photoresistor.md):
+
+![https://github.com/rwaldron/johnny-five/raw/master/docs/breadboard/photoresistor.png](https://github.com/rwaldron/johnny-five/blob/master/docs/breadboard/photoresistor.png)<br>
+
+Fritzing diagram: [https://github.com/rwaldron/johnny-five/blob/master/docs/breadboard/photoresistor.fzz](https://github.com/rwaldron/johnny-five/blob/master/docs/breadboard/photoresistor.fzz)
 
 ## Run
 
