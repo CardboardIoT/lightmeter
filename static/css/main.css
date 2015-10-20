@@ -9,11 +9,12 @@ body {
   background: #333;
 }
 
-
 .component {
+  box-sizing: border-box;
   font-size: 4rem;
-  height: 33vh;
-  line-height: 33vh;
+  height: 30vh;
+  line-height: 30vh;
+  margin: 2vh;
   text-align: center;
 }
 
@@ -34,6 +35,36 @@ body {
 
 .iso {
   transform: rotate(-90deg);
+}
+
+.bar {
+  display: block;
+  position: relative;
+  margin: 0 10vw;
+  height: 1vh;
+}
+
+.bar-outer,
+.bar-inner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+}
+
+.bar-outer {
+  width: 100%;
+  background: #000;
+  text-align: left;
+}
+
+.bar-inner {
+  width: 100%;
+  background: #fff;
+}
+
+.credits {
+  display: none;
 }
 
 

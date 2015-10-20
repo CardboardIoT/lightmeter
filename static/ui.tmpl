@@ -14,6 +14,11 @@
 <div class="component">
   <span class="label">Light:</span>
   <span class="value">{{ Math.floor(lightLevel) || '—' }}</span>
+  <div class="bar">
+    <div class="bar-outer">
+      <div style="width: {{ lightLevelPercent }}%" class="bar-inner"></div>
+    </div>
+  </div>
 </div>
 <div class="credits">
   <h2>Icons</h2>

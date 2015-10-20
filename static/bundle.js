@@ -29908,7 +29908,16 @@ function initUiWithTemplate(template) {
     template: template,
     data: {
       timeSecs: 1,
-      iso: 400
+      iso: 400,
+      lightLevelRaw: 0
+    },
+    computed: {
+      lightLevel: function lightLevel() {
+        return 1024 - this.get('lightLevelRaw');
+      },
+      lightLevelPercent: function lightLevelPercent() {
+        return Math.floor(this.get('lightLevel') / 1024 * 100);
+      }
     }
   });
 }
@@ -29918,7 +29927,7 @@ function subscribeMessagesToUi(ui, client) {
   client.subscribe(lightLevelTopic);
   client.on('message', function (topic, msg) {
     if (lightLevelTopic === topic) {
-      ui.animate('lightLevel', msg.toString());
+      ui.animate('lightLevelRaw', msg.toString());
     }
   });
 }
