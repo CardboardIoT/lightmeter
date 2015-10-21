@@ -1,9 +1,13 @@
 {
-  "broker": {
+  "brokerNode": {
     "protocol": "mqtts",
     "hostname": "test.mosquitto.org",
     "port": 8883,
-    "wsPort": 8081,
     "caFile": "mosquitto.org.crt"
+  },
+  "brokerUi": {
+    "protocol": "wss",
+    "hostname": "test.mosquitto.org",
+    "port": 8081
   }
 }

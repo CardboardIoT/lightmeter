@@ -48599,9 +48599,9 @@ function fetchConfig() {
 function createClientAndSubscribe(config) {
   var topic = '#',
       brokerUrl = url.format({
-    protocol: 'wss',
-    hostname: config.broker.hostname,
-    port: config.broker.wsPort
+    protocol: config.brokerUi.protocol,
+    hostname: config.brokerUi.hostname,
+    port: config.brokerUi.port
   });
   console.log('brokerUrl', brokerUrl);
   return new Promise(function (resolve, reject) {
