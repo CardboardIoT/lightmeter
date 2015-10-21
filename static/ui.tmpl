@@ -4,7 +4,9 @@
   </svg>
   <span class="label visuallyhidden">Time</span>
   <span class="value">
-    {{timeSecs || '—'}}<span class="unit">s</span>
+    {{#exposure}}
+      {{time}}<span class="unit">{{unit}}</span>
+    {{/exposure}}
   </span>
 </div>
 <div class="component">

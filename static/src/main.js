@@ -3,6 +3,8 @@ var Ractive = require('ractive'),
     Promise = require('es6-promise').Promise,
     url     = require('url');
 
+var time = require('./time');
+
 // WHAT-WG Fetch API polyfill
 require('whatwg-fetch');
 
@@ -87,6 +89,10 @@ function initUiWithTemplate(template) {
         } else {
           return null;
         }
+      },
+      exposure: function () {
+        var timeSecs = this.get('timeSecs');
+        return time.splitIntoParts(timeSecs);
       },
       lightLevel: function () {
         return 1024 - this.get('lightLevelRaw');
