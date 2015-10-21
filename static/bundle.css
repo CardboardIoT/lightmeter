@@ -488,6 +488,11 @@ body {
   background: #fff;
 }
 
+button {
+  border: none;
+  background: none;
+}
+
 .credits {
   display: none;
 }

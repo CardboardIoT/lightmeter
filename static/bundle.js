@@ -48476,31 +48476,51 @@ var conditions = [{
   id: 'direct-sun',
   name: 'Direct sun',
   exposure: {
-    400: 1.3
+    400: 1.3,
+    800: 1.6,
+    200: 2.5,
+    100: 5,
+    50: 10
   }
 }, {
   id: 'partial-cloud',
   name: 'Partial cloud',
   exposure: {
-    400: 5
+    400: 5,
+    800: 2.5,
+    200: 10,
+    100: 20,
+    50: 40
   }
 }, {
   id: 'cloudy',
   name: 'Cloudy',
   exposure: {
-    400: 10
+    400: 10,
+    800: 5,
+    200: 20,
+    100: 40,
+    50: 90
   }
 }, {
   id: 'indoors',
   name: 'Indoors',
   exposure: {
-    400: 180
+    400: 180,
+    800: 90,
+    200: 300,
+    100: 600,
+    50: 1200
   }
 }, {
   id: 'evening',
   name: 'Evening',
   exposure: {
-    400: 600
+    400: 600,
+    800: 300,
+    200: 1200,
+    100: 3000,
+    50: 5400
   }
 }];
 
@@ -48514,6 +48534,9 @@ exports['default'] = {
   info: function info(lightLevel) {
     var id = scale(lightLevel);
     return lodash.find(conditions, { id: id });
+  },
+  availableIso: function availableIso() {
+    return lodash(conditions[0].exposure).keys().map(lodash.parseInt).sortBy().value();
   }
 };
 module.exports = exports['default'];
@@ -48521,17 +48544,14 @@ module.exports = exports['default'];
 },{"d3-scale":33,"lodash":35}],86:[function(require,module,exports){
 'use strict';
 
-var Ractive = require('ractive'),
-    mqtt = require('mqtt'),
+var mqtt = require('mqtt'),
     Promise = require('es6-promise').Promise,
     url = require('url');
 
-var time = require('./time');
+var ui = require('./ui');
 
 // WHAT-WG Fetch API polyfill
 require('whatwg-fetch');
-
-var _conditions = require('./conditions');
 
 // Start
 init();
@@ -48586,38 +48606,7 @@ function fetchTemplate() {
 }
 
 function initUiWithTemplate(template) {
-  return new Ractive({
-    el: '#container',
-    template: template,
-    data: {
-      iso: 400,
-      lightLevelRaw: 0
-    },
-    computed: {
-      timeSecs: function timeSecs() {
-        var c = this.get('conditions'),
-            iso = this.get('iso');
-        if (c && c.exposure[iso]) {
-          return c.exposure[iso];
-        } else {
-          return null;
-        }
-      },
-      exposure: function exposure() {
-        var timeSecs = this.get('timeSecs');
-        return time.splitIntoParts(timeSecs);
-      },
-      lightLevel: function lightLevel() {
-        return 1024 - this.get('lightLevelRaw');
-      },
-      lightLevelPercent: function lightLevelPercent() {
-        return Math.floor(this.get('lightLevel') / 1024 * 100);
-      },
-      conditions: function conditions() {
-        return _conditions.info(this.get('lightLevel'));
-      }
-    }
-  });
+  return ui.create(template);
 }
 
 function subscribeMessagesToUi(ui, client) {
@@ -48630,7 +48619,7 @@ function subscribeMessagesToUi(ui, client) {
   });
 }
 
-},{"./conditions":85,"./time":87,"es6-promise":34,"mqtt":38,"ractive":83,"url":30,"whatwg-fetch":84}],87:[function(require,module,exports){
+},{"./ui":88,"es6-promise":34,"mqtt":38,"url":30,"whatwg-fetch":84}],87:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -48662,4 +48651,69 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"moment":36}]},{},[86]);
+},{"moment":36}],88:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports.create = create;
+var Ractive = require('ractive');
+
+var _conditions = require('./conditions'),
+    time = require('./time');
+
+function create(template) {
+  return new Ractive({
+    el: '#container',
+    template: template,
+    oninit: function oninit(options) {
+      this.on('changeIso', function (evt, index) {
+        var available = this.get('availableIso'),
+            lastIndex = available.length - 1,
+            next;
+        if (index < 0) {
+          index = lastIndex;
+        }
+        next = available[index % available.length];
+        this.set('iso', next);
+      });
+    },
+    data: {
+      iso: 400,
+      availableIso: _conditions.availableIso(),
+      lightLevelRaw: 0
+    },
+    computed: {
+      isoIndex: function isoIndex() {
+        var iso = this.get('iso'),
+            available = this.get('availableIso');
+        return available.indexOf(iso);
+      },
+      timeSecs: function timeSecs() {
+        var c = this.get('conditions'),
+            iso = this.get('iso');
+        if (c && c.exposure[iso]) {
+          return c.exposure[iso];
+        } else {
+          return null;
+        }
+      },
+      exposure: function exposure() {
+        var timeSecs = this.get('timeSecs');
+        return time.splitIntoParts(timeSecs);
+      },
+      lightLevel: function lightLevel() {
+        return 1024 - this.get('lightLevelRaw');
+      },
+      lightLevelPercent: function lightLevelPercent() {
+        return Math.floor(this.get('lightLevel') / 1024 * 100);
+      },
+      conditions: function conditions() {
+        return _conditions.info(this.get('lightLevel'));
+      }
+    }
+  });
+}
+
+},{"./conditions":85,"./time":87,"ractive":83}]},{},[86]);

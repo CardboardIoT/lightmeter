@@ -10,8 +10,10 @@
   </span>
 </div>
 <div class="component">
+  <button on-click="changeIso: {{isoIndex - 1}}">&lt;</button>
   <span class="label iso">ISO</span>
   <span class="value">{{iso}}</span>
+  <button on-click="changeIso: {{isoIndex + 1}}">&gt;</button>
 </div>
 <div class="component">
   <span class="label visuallyhidden">Light:</span>
