@@ -9,6 +9,8 @@ A simple Arduino lightmeter and web UI.
 
 Tested with node.js v0.12. You may have problems with v4 and native modules.
 
+Flash your Arduino with Standard Firmata, found in the Arduino IDE: `File -> Examples -> Firmata -> StandardFirmata`.
+
 ## Circuit
 
 ### Arduino
