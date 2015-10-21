@@ -6,6 +6,8 @@ var Ractive = require('ractive'),
 // WHAT-WG Fetch API polyfill
 require('whatwg-fetch');
 
+var conditions = require('./conditions');
+
 // Start
 init();
 
@@ -54,7 +56,11 @@ function createClientAndSubscribe(config) {
 
 function fetchTemplateAndInitUi() {
   return fetchTemplate()
-    .then(initUiWithTemplate);
+    .then(initUiWithTemplate)
+    .then(function (ui) {
+      window.ui = ui;
+      return ui;
+    });
 }
 
 function fetchTemplate() {
@@ -69,11 +75,19 @@ function initUiWithTemplate(template) {
     el: '#container',
     template: template,
     data: {
-      timeSecs: 1,
       iso: 400,
       lightLevelRaw: 0
     },
     computed: {
+      timeSecs: function () {
+        var c = this.get('conditions'),
+            iso = this.get('iso');
+        if (c && c.exposure[iso]) {
+          return c.exposure[iso];
+        } else {
+          return null;
+        }
+      },
       lightLevel: function () {
         return 1024 - this.get('lightLevelRaw');
       },
@@ -81,6 +95,9 @@ function initUiWithTemplate(template) {
         return Math.floor(
           (this.get('lightLevel') / 1024) * 100
         );
+      },
+      conditions: function () {
+        return conditions.info(this.get('lightLevel'));
       }
     }
   });
