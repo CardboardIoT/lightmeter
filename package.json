@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node arduno",
+    "start": "node arduino",
     "static": "node static-server.js",
     "build": "npm run build-js && npm run build-css",
     "watch": "echo 'Run \"npm run watch-js\" and \"npm run watch-css\" in seperate tabs'",
