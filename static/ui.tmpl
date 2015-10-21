@@ -1,30 +1,32 @@
-<div class="component">
-  <svg class="icon-timer">
-    <use xlink:href="icons/stopwatch.svg#stopwatch"></use>
-  </svg>
-  <span class="label visuallyhidden">Time</span>
-  <span class="value">
-    {{#exposure}}
-      {{time}}<span class="unit">{{unit}}</span>
-    {{/exposure}}
-  </span>
-</div>
-<div class="component">
-  <button on-click="changeIso: {{isoIndex - 1}}">&lt;</button>
-  <span class="label iso">ISO</span>
-  <span class="value">{{iso}}</span>
-  <button on-click="changeIso: {{isoIndex + 1}}">&gt;</button>
-</div>
-<div class="component">
-  <span class="label visuallyhidden">Light:</span>
-  <span class="value">{{ conditions.name }}</span>
-  <div class="bar">
-    <div class="bar-outer">
-      <div style="width: {{ lightLevelPercent }}%" class="bar-inner"></div>
+<div class="ui" style="background: linear-gradient(135deg, {{conditions.colour.start}}, {{conditions.colour.stop}});">
+  <div class="component">
+    <svg class="icon-timer">
+      <use xlink:href="icons/stopwatch.svg#stopwatch"></use>
+    </svg>
+    <span class="label visuallyhidden">Time</span>
+    <span class="value">
+      {{#exposure}}
+        {{time}}<span class="unit">{{unit}}</span>
+      {{/exposure}}
+    </span>
+  </div>
+  <div class="component">
+    <button on-click="changeIso: {{isoIndex - 1}}">&lt;</button>
+    <span class="label iso">ISO</span>
+    <span class="value">{{iso}}</span>
+    <button on-click="changeIso: {{isoIndex + 1}}">&gt;</button>
+  </div>
+  <div class="component">
+    <span class="label visuallyhidden">Light:</span>
+    <span class="value">{{ conditions.name }}</span>
+    <div class="bar">
+      <div class="bar-outer">
+        <div style="width: {{ lightLevelPercent }}%" class="bar-inner"></div>
+      </div>
     </div>
   </div>
-</div>
-<div class="credits">
-  <h2>Icons</h2>
-  <p>Stopwatch by Edward Boatman from the Noun Project</p>
+  <div class="credits">
+    <h2>Icons</h2>
+    <p>Stopwatch by Edward Boatman from the Noun Project</p>
+  </div>
 </div>

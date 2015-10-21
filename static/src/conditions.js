@@ -11,6 +11,10 @@ var conditions = [
       200: 2.5,
       100: 5,
       50: 10
+    },
+    colour: {
+      start: '#f7ec86',
+      stop : '#fdc753'
     }
   },
   {
@@ -22,6 +26,10 @@ var conditions = [
       200: 10,
       100: 20,
       50: 40
+    },
+    colour: {
+      start: '#f4e884',
+      stop : '#60c084'
     }
   },
   {
@@ -33,6 +41,10 @@ var conditions = [
       200: 20,
       100: 40,
       50: 90
+    },
+    colour: {
+      start: '#70c488',
+      stop : '#20bcfc'
     }
   },
   {
@@ -44,6 +56,10 @@ var conditions = [
       200: 300,
       100: 600,
       50: 1200
+    },
+    colour: {
+      start: '#27bbf4',
+      stop : '#6340bc'
     }
   },
   {
@@ -55,6 +71,10 @@ var conditions = [
       200: 1200,
       100: 3000,
       50: 5400
+    },
+    colour: {
+      start: '#977bd7',
+      stop : '#f75892'
     }
   }
 ];

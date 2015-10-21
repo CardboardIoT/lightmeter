@@ -432,12 +432,19 @@ body {
   background: #333;
 }
 
+.ui-container,
+.ui {
+  height: 100vh;
+  width: 100vw;
+}
+
+
 .component {
   box-sizing: border-box;
   font-size: 4rem;
   height: 30vh;
   line-height: 30vh;
-  margin: 2vh;
+  padding: 2vh;
   text-align: center;
 }
 
@@ -479,7 +486,7 @@ body {
 
 .bar-outer {
   width: 100%;
-  background: #000;
+  background: rgba(0, 0, 0, 0.3);
   text-align: left;
 }
 
