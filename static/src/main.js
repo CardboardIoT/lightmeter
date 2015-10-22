@@ -2,7 +2,7 @@ var mqtt    = require('mqtt'),
     Promise = require('es6-promise').Promise,
     url     = require('url');
 
-var ui = require('./ui');
+var Widget = require('./widget');
 
 // WHAT-WG Fetch API polyfill
 require('whatwg-fetch');
@@ -16,9 +16,9 @@ function init() {
     fetchConfigAndCreateClient()
   ])
     .then(function (params) {
-      var ui = params[0],
+      var widget = params[0],
           client = params[1];
-      subscribeMessagesToUi(ui, client);
+      subscribeMessagesToUi(widget, client);
     })
     .catch(function (err) {
       console.error(err);
@@ -56,9 +56,9 @@ function createClientAndSubscribe(config) {
 function fetchTemplateAndInitUi() {
   return fetchTemplate()
     .then(initUiWithTemplate)
-    .then(function (ui) {
-      window.ui = ui;
-      return ui;
+    .then(function (widget) {
+      window.widget = widget;
+      return widget;
     });
 }
 
@@ -70,15 +70,15 @@ function fetchTemplate() {
 }
 
 function initUiWithTemplate(template) {
-  return ui.create(template);
+  return new Widget(template);
 }
 
-function subscribeMessagesToUi(ui, client) {
+function subscribeMessagesToUi(widget, client) {
   var lightLevelTopic = 'ciot/lightmeter/value';
   client.subscribe(lightLevelTopic);
   client.on('message', function (topic, msg) {
     if (lightLevelTopic === topic) {
-      ui.animate('lightLevelRaw', msg.toString());
+      widget.setLightLevel(msg.toString());
     }
   });
 }

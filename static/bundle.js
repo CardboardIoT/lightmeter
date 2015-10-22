@@ -48564,7 +48564,7 @@ var mqtt = require('mqtt'),
     Promise = require('es6-promise').Promise,
     url = require('url');
 
-var ui = require('./ui');
+var Widget = require('./widget');
 
 // WHAT-WG Fetch API polyfill
 require('whatwg-fetch');
@@ -48574,9 +48574,9 @@ init();
 
 function init() {
   Promise.all([fetchTemplateAndInitUi(), fetchConfigAndCreateClient()]).then(function (params) {
-    var ui = params[0],
+    var widget = params[0],
         client = params[1];
-    subscribeMessagesToUi(ui, client);
+    subscribeMessagesToUi(widget, client);
   })['catch'](function (err) {
     console.error(err);
   });
@@ -48609,9 +48609,9 @@ function createClientAndSubscribe(config) {
 }
 
 function fetchTemplateAndInitUi() {
-  return fetchTemplate().then(initUiWithTemplate).then(function (ui) {
-    window.ui = ui;
-    return ui;
+  return fetchTemplate().then(initUiWithTemplate).then(function (widget) {
+    window.widget = widget;
+    return widget;
   });
 }
 
@@ -48622,20 +48622,20 @@ function fetchTemplate() {
 }
 
 function initUiWithTemplate(template) {
-  return ui.create(template);
+  return new Widget(template);
 }
 
-function subscribeMessagesToUi(ui, client) {
+function subscribeMessagesToUi(widget, client) {
   var lightLevelTopic = 'ciot/lightmeter/value';
   client.subscribe(lightLevelTopic);
   client.on('message', function (topic, msg) {
     if (lightLevelTopic === topic) {
-      ui.animate('lightLevelRaw', msg.toString());
+      widget.setLightLevel(msg.toString());
     }
   });
 }
 
-},{"./ui":88,"es6-promise":34,"mqtt":38,"url":30,"whatwg-fetch":84}],87:[function(require,module,exports){
+},{"./widget":89,"es6-promise":34,"mqtt":38,"url":30,"whatwg-fetch":84}],87:[function(require,module,exports){
 'use strict';
 
 var moment = require('moment');
@@ -48724,4 +48724,19 @@ module.exports.create = function (template) {
   });
 };
 
-},{"./conditions":85,"./time":87,"ractive":83}]},{},[86]);
+},{"./conditions":85,"./time":87,"ractive":83}],89:[function(require,module,exports){
+'use strict';
+
+var ui = require('./ui');
+
+var Widget = function Widget(template) {
+  this.ui = ui.create(template || '');
+};
+
+Widget.prototype.setLightLevel = function (value) {
+  this.ui.animate('lightLevelRaw', value);
+};
+
+module.exports = Widget;
+
+},{"./ui":88}]},{},[86]);
