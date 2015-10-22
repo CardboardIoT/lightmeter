@@ -2,6 +2,7 @@
   "name": "lightmeter",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "scripts": {
     "start": "node arduino",
     "static": "node static-server.js",
