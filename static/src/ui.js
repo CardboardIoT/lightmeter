@@ -1,9 +1,8 @@
 var Ractive = require('ractive');
 
-var conditions = require('./conditions'),
-    time = require('./time');
+var time = require('./time');
 
-module.exports.create = function (template) {
+module.exports.create = function (template, conditions) {
   return new Ractive({
     el: '#container',
     template: template || '',

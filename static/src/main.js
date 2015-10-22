@@ -70,7 +70,7 @@ function fetchTemplate() {
 }
 
 function initUiWithTemplate(template) {
-  return new Widget(template);
+  return new Widget(template, true /* add default conditions */);
 }
 
 function subscribeMessagesToUi(widget, client) {

@@ -1,7 +1,7 @@
 var d3Scale  = require('d3-scale'),
     lodash = require('lodash');
 
-var conditions = [
+var defaults = [
   {
     id: 'direct-sun',
     name: 'Direct sun',
@@ -79,24 +79,42 @@ var conditions = [
   }
 ];
 
-var range = lodash.pluck(conditions, 'id').reverse();
+var conditions = [],
+    scale;
 
-var scale = d3Scale.quantize();
+function createScale() {
+  var range = lodash.pluck(conditions, 'id').reverse();
+  return d3Scale
+    .quantize()
+    .domain([0, 1023])
+    .range(range);
+}
 
-scale
-  .domain([0, 1023])
-  .range(range);
+module.exports.defaults = defaults;
 
-module.exports = {
-  info: function (lightLevel) {
-    var id = scale(lightLevel);
-    return lodash.find(conditions, { id: id });
-  },
-  availableIso: function () {
-    return lodash(conditions[0].exposure)
-            .keys()
-            .map(lodash.parseInt)
-            .sortBy()
-            .value();
-  }
+module.exports.create = function () {
+  this.scale = createScale();
+  return {
+    add: function (condition) {
+      conditions.push(condition);
+      this.scale = createScale();
+    },
+    info: function (lightLevel) {
+      var id = this.scale(lightLevel);
+      return lodash.find(conditions, { id: id });
+    },
+    availableIso: function () {
+      var available = [];
+
+      if (conditions[0] && conditions[0].exposure) {
+        available = lodash(conditions[0].exposure)
+                .keys()
+                .map(lodash.parseInt)
+                .sortBy()
+                .value();
+      }
+
+      return available;
+    }
+  };
 }

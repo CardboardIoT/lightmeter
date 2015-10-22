@@ -48469,7 +48469,7 @@ function extend() {
 var d3Scale = require('d3-scale'),
     lodash = require('lodash');
 
-var conditions = [{
+var defaults = [{
   id: 'direct-sun',
   name: 'Direct sun',
   exposure: {
@@ -48541,20 +48541,37 @@ var conditions = [{
   }
 }];
 
-var range = lodash.pluck(conditions, 'id').reverse();
+var conditions = [],
+    scale;
 
-var scale = d3Scale.quantize();
+function createScale() {
+  var range = lodash.pluck(conditions, 'id').reverse();
+  return d3Scale.quantize().domain([0, 1023]).range(range);
+}
 
-scale.domain([0, 1023]).range(range);
+module.exports.defaults = defaults;
 
-module.exports = {
-  info: function info(lightLevel) {
-    var id = scale(lightLevel);
-    return lodash.find(conditions, { id: id });
-  },
-  availableIso: function availableIso() {
-    return lodash(conditions[0].exposure).keys().map(lodash.parseInt).sortBy().value();
-  }
+module.exports.create = function () {
+  this.scale = createScale();
+  return {
+    add: function add(condition) {
+      conditions.push(condition);
+      this.scale = createScale();
+    },
+    info: function info(lightLevel) {
+      var id = this.scale(lightLevel);
+      return lodash.find(conditions, { id: id });
+    },
+    availableIso: function availableIso() {
+      var available = [];
+
+      if (conditions[0] && conditions[0].exposure) {
+        available = lodash(conditions[0].exposure).keys().map(lodash.parseInt).sortBy().value();
+      }
+
+      return available;
+    }
+  };
 };
 
 },{"d3-scale":33,"lodash":35}],86:[function(require,module,exports){
@@ -48622,7 +48639,7 @@ function fetchTemplate() {
 }
 
 function initUiWithTemplate(template) {
-  return new Widget(template);
+  return new Widget(template, true /* add default conditions */);
 }
 
 function subscribeMessagesToUi(widget, client) {
@@ -48668,10 +48685,9 @@ module.exports = {
 
 var Ractive = require('ractive');
 
-var _conditions = require('./conditions'),
-    time = require('./time');
+var time = require('./time');
 
-module.exports.create = function (template) {
+module.exports.create = function (template, _conditions) {
   return new Ractive({
     el: '#container',
     template: template || '',
@@ -48724,19 +48740,34 @@ module.exports.create = function (template) {
   });
 };
 
-},{"./conditions":85,"./time":87,"ractive":83}],89:[function(require,module,exports){
+},{"./time":87,"ractive":83}],89:[function(require,module,exports){
 'use strict';
 
-var ui = require('./ui');
+var ui = require('./ui'),
+    conditions = require('./conditions');
 
-var Widget = function Widget(template) {
-  this.ui = ui.create(template || '');
+var Widget = function Widget(template, useDefaults) {
+  var self = this;
+  self.conditions = conditions.create();
+
+  // Prepoulate with default conditions
+  if (useDefaults === true) {
+    conditions.defaults.forEach(function (condition) {
+      self.addLightingCondition(condition);
+    });
+  }
+
+  self.ui = ui.create(template || '', self.conditions);
 };
 
 Widget.prototype.setLightLevel = function (value) {
   this.ui.animate('lightLevelRaw', value);
 };
 
+Widget.prototype.addLightingCondition = function (spec) {
+  this.conditions.add(spec);
+};
+
 module.exports = Widget;
 
-},{"./ui":88}]},{},[86]);
+},{"./conditions":85,"./ui":88}]},{},[86]);
