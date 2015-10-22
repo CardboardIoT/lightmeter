@@ -87,7 +87,7 @@ scale
   .domain([0, 1023])
   .range(range);
 
-export default {
+module.exports = {
   info: function (lightLevel) {
     var id = scale(lightLevel);
     return lodash.find(conditions, { id: id });

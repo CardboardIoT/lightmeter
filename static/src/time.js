@@ -1,6 +1,6 @@
 var moment  = require('moment');
 
-export default {
+module.exports = {
   splitIntoParts: function (secs) {
     var duration, parts = [];
 

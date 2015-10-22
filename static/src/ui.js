@@ -3,10 +3,10 @@ var Ractive = require('ractive');
 var conditions = require('./conditions'),
     time = require('./time');
 
-export function create(template) {
+module.exports.create = function (template) {
   return new Ractive({
     el: '#container',
-    template: template,
+    template: template || '',
     oninit: function ( options ) {
       this.on('changeIso', function (evt, index) {
         var available = this.get('availableIso'),

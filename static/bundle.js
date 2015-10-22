@@ -48466,9 +48466,6 @@ function extend() {
 },{}],85:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
 var d3Scale = require('d3-scale'),
     lodash = require('lodash');
 
@@ -48550,7 +48547,7 @@ var scale = d3Scale.quantize();
 
 scale.domain([0, 1023]).range(range);
 
-exports['default'] = {
+module.exports = {
   info: function info(lightLevel) {
     var id = scale(lightLevel);
     return lodash.find(conditions, { id: id });
@@ -48559,7 +48556,6 @@ exports['default'] = {
     return lodash(conditions[0].exposure).keys().map(lodash.parseInt).sortBy().value();
   }
 };
-module.exports = exports['default'];
 
 },{"d3-scale":33,"lodash":35}],86:[function(require,module,exports){
 'use strict';
@@ -48642,12 +48638,9 @@ function subscribeMessagesToUi(ui, client) {
 },{"./ui":88,"es6-promise":34,"mqtt":38,"url":30,"whatwg-fetch":84}],87:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
 var moment = require('moment');
 
-exports['default'] = {
+module.exports = {
   splitIntoParts: function splitIntoParts(secs) {
     var duration,
         parts = [];
@@ -48669,24 +48662,19 @@ exports['default'] = {
     }
   }
 };
-module.exports = exports['default'];
 
 },{"moment":36}],88:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-exports.create = create;
 var Ractive = require('ractive');
 
 var _conditions = require('./conditions'),
     time = require('./time');
 
-function create(template) {
+module.exports.create = function (template) {
   return new Ractive({
     el: '#container',
-    template: template,
+    template: template || '',
     oninit: function oninit(options) {
       this.on('changeIso', function (evt, index) {
         var available = this.get('availableIso'),
@@ -48734,6 +48722,6 @@ function create(template) {
       }
     }
   });
-}
+};
 
 },{"./conditions":85,"./time":87,"ractive":83}]},{},[86]);
