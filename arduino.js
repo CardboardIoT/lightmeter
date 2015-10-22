@@ -21,7 +21,7 @@ board.on('ready', function() {
   photoresistor.on('data', function() {
     var topic = 'ciot/lightmeter/value',
         value = this.value.toString();
-    client.publish(topic, value);
+    client.publish(topic, value, { retain: true });
     console.log('Published:', topic, value);
   });
 });
