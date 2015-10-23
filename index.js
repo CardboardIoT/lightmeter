@@ -1,5 +1,5 @@
 
 module.exports = {
-  Widget: require('./static/src/ui'),
+  Widget: require('./static/src/widget'),
   serve: require('./static-server')
 };
