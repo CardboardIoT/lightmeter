@@ -29,4 +29,6 @@ Widget.prototype.addLightingCondition = function (spec) {
   this.conditions.add(spec);
 }
 
+Widget.defaults = conditions.defaults;
+
 module.exports = Widget;
