@@ -1,15 +1,11 @@
 var mqtt    = require('mqtt');
 
-var LightMeterWidget = require('./widget');
+var config = require('../../config/default.json'),
+    LightMeterWidget = require('./widget');
 
-// WHAT-WG Fetch API polyfill
-require('whatwg-fetch');
+init();
 
-fetchConfig()
-  .then(init)
-  .catch(console.error.bind(console));
-
-function init(config) {
+function init() {
   console.log('init', config);
 
   var lightTopic = 'ciot/lightmeter/value';
@@ -33,11 +29,4 @@ function init(config) {
     }
   });
 
-}
-
-function fetchConfig() {
-  return fetch('config.json')
-    .then(function (res) {
-      return res.json();
-    });
 }
