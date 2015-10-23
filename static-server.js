@@ -3,27 +3,17 @@
   host UI files
 */
 
-var express = require('express'),
-    config  = require('config');
+var beefy = require('beefy'),
+    http = require('http');
 
 function serve(port) {
-  port = port || 3000;
-  var app = express();
-
-  app.use(express.static('static'));
-
-  // Serve configuration to front-end app
-  app.get('/config.json', function (req, res) {
-    res.json(config);
+  var handler = beefy({
+    entries: ['static/src/main.js'],
+    bundler: 'watchify',
+    bundlerFlags: ['-t', 'brfs'],
+    cwd: __dirname + '/static'
   });
-
-  var server = app.listen(port, function () {
-    var host = server.address().address;
-    var port = server.address().port;
-
-    console.log('Static server listening at http://%s:%s', host, port);
-  });
-  return server;
+  http.createServer(handler).listen(port);
 }
 
 // Export for other modules to use

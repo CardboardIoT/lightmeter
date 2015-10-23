@@ -17,6 +17,7 @@
   "author": "Andrew Nicolaou <me@andrewnicolaou.co.uk>",
   "license": "ISC",
   "dependencies": {
+    "beefy": "^2.1.5",
     "brfs": "^1.4.1",
     "config": "~1.16.0",
     "debug": "~2.2.0",
