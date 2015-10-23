@@ -114,19 +114,19 @@ function createScale() {
 module.exports.defaults = defaults;
 
 module.exports.create = function () {
-  this.scale = createScale();
+  var scale = createScale();
   var instance = new EventEmitter();
 
   instance.add = function (condition) {
     conditions.push(condition);
     conditions = lodash.sortBy(conditions, 'sensorRange');
 
-    this.scale = createScale();
-    this.emit('change');
+    scale = createScale();
+    instance.emit('change');
   };
 
   instance.info = function (lightLevel) {
-    var name = this.scale(lightLevel);
+    var name = scale(lightLevel);
     return lodash.find(conditions, { name: name });
   };
 

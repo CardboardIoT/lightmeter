@@ -1,5 +1,7 @@
 var fs = require('fs');
 
+var lodash = require('lodash');
+
 var ui = require('./ui'),
     conditions = require('./conditions');
 
@@ -26,7 +28,10 @@ Widget.prototype.setLightLevel = function (value) {
 }
 
 Widget.prototype.addLightingCondition = function (spec) {
-  this.conditions.add(spec);
+  if (!lodash.isArray(spec)) {
+    spec = [spec];
+  }
+  spec.forEach(this.conditions.add);
 }
 
 Widget.defaults = conditions.defaults;
