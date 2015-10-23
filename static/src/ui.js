@@ -31,7 +31,7 @@ module.exports.create = function (template, conditions) {
     },
     data: {
       iso: null,
-      availableIso: [],
+      availableIso: conditions.availableIso(),
       lightLevel: null
     },
     computed: {

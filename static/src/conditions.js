@@ -4,7 +4,6 @@ var d3Scale  = require('d3-scale'),
 
 var defaults = [
   {
-    id: 'direct-sun',
     name: 'Direct sun',
     exposure: {
       400: 1.3,
@@ -20,7 +19,6 @@ var defaults = [
     sensorRange: [0.8, 1]
   },
   {
-    id: 'partial-cloud',
     name: 'Partial cloud',
     exposure: {
       400: 5,
@@ -36,7 +34,6 @@ var defaults = [
     sensorRange: [0.6, 0.8]
   },
   {
-    id: 'cloudy',
     name: 'Cloudy',
     exposure: {
       400: 10,
@@ -52,7 +49,6 @@ var defaults = [
     sensorRange: [0.4, 0.6]
   },
   {
-    id: 'indoors',
     name: 'Indoors',
     exposure: {
       400: 180,
@@ -68,7 +64,6 @@ var defaults = [
     sensorRange: [0.2, 0.4]
   },
   {
-    id: 'evening',
     name: 'Evening',
     exposure: {
       400: 600,
@@ -91,7 +86,7 @@ var conditions = [],
 /*
   This computes a polylinear scale
   This allows light values to be mapped unevenly
-  to lighting condition ids.
+  to lighting condition names.
 
   e.g. [0, 0.7, 1] -> ['sunny', 'dark']
        Values between 0 - 0.69999 will map to 'sunny'
@@ -107,7 +102,7 @@ function createScale() {
     .value();
 
   range = lodash(conditions)
-    .pluck('id')
+    .pluck('name')
     .value();
 
   return d3Scale
@@ -131,8 +126,8 @@ module.exports.create = function () {
   };
 
   instance.info = function (lightLevel) {
-    var id = this.scale(lightLevel);
-    return lodash.find(conditions, { id: id });
+    var name = this.scale(lightLevel);
+    return lodash.find(conditions, { name: name });
   };
 
   instance.availableIso = function () {
