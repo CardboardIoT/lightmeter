@@ -8,7 +8,7 @@ init();
 function init() {
   console.log('init', config);
 
-  var lightTopic = 'ciot/lightmeter/value';
+  var lightTopic = 'ciot/pinhole/light/value';
 
   var lightMeter = new LightMeterWidget(null, true /* use default conditions */);
 
