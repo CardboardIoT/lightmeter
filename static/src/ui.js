@@ -61,14 +61,14 @@ module.exports.create = function (template, conditions) {
       },
       exposure: function () {
         var timeSecs = this.get('timeSecs');
-        return time.splitIntoParts(timeSecs);
+        return timeSecs ? time.splitIntoParts(timeSecs) : null;
       },
       lightLevel: function () {
-        return 1024 - this.get('lightLevelRaw');
+        return this.get('lightLevelRaw');
       },
       lightLevelPercent: function () {
         return Math.floor(
-          (this.get('lightLevel') / 1024) * 100
+          this.get('lightLevel') * 100
         );
       },
       conditions: function () {
