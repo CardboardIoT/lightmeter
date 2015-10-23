@@ -15,13 +15,27 @@ module.exports.create = function (template, conditions) {
         next = available[index % available.length];
         this.set('iso', next);
       });
+
+      if (this.get('iso') == null) {
+        this.set('iso', this.get('availableIso')[0]);
+      }
     },
     data: {
-      iso: 400,
+      iso: null,
       availableIso: conditions.availableIso(),
-      lightLevelRaw: 0
+      lightLevelRaw: null
     },
     computed: {
+      error: function () {
+        var hasLight = this.get('lightLevelRaw') != null,
+            hasIso = this.get('iso') != null;
+
+        if (!hasLight) {
+          return { msg: 'No light data is being received' };
+        } else if (!hasIso) {
+          return { msg: 'No lighting conditions data has been set' };
+        }
+      },
       isoIndex: function () {
         var iso = this.get('iso'),
             available = this.get('availableIso');

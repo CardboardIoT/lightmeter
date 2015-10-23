@@ -1,4 +1,8 @@
 <div class="ui" style="background: linear-gradient(135deg, {{conditions.colour.start}}, {{conditions.colour.stop}});">
+  {{#error}}
+    {{msg}}
+  {{/}}
+  {{^error}}
   <div class="component">
     <svg class="icon-timer">
       <use xlink:href="icons/stopwatch.svg#stopwatch"></use>
@@ -29,4 +33,5 @@
     <h2>Icons</h2>
     <p>Stopwatch by Edward Boatman from the Noun Project</p>
   </div>
+  {{/}}
 </div>

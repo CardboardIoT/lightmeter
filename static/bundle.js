@@ -47324,13 +47324,27 @@ module.exports.create = function (template, _conditions) {
         next = available[index % available.length];
         this.set('iso', next);
       });
+
+      if (this.get('iso') == null) {
+        this.set('iso', this.get('availableIso')[0]);
+      }
     },
     data: {
-      iso: 400,
+      iso: null,
       availableIso: _conditions.availableIso(),
-      lightLevelRaw: 0
+      lightLevelRaw: null
     },
     computed: {
+      error: function error() {
+        var hasLight = this.get('lightLevelRaw') != null,
+            hasIso = this.get('iso') != null;
+
+        if (!hasLight) {
+          return { msg: 'No light data is being received' };
+        } else if (!hasIso) {
+          return { msg: 'No lighting conditions data has been set' };
+        }
+      },
       isoIndex: function isoIndex() {
         var iso = this.get('iso'),
             available = this.get('availableIso');
@@ -47366,12 +47380,10 @@ module.exports.create = function (template, _conditions) {
 (function (Buffer){
 'use strict';
 
-
-
 var ui = require('./ui'),
     conditions = require('./conditions');
 
-var defaultTemplate = Buffer("PGRpdiBjbGFzcz0idWkiIHN0eWxlPSJiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCB7e2NvbmRpdGlvbnMuY29sb3VyLnN0YXJ0fX0sIHt7Y29uZGl0aW9ucy5jb2xvdXIuc3RvcH19KTsiPgogIDxkaXYgY2xhc3M9ImNvbXBvbmVudCI+CiAgICA8c3ZnIGNsYXNzPSJpY29uLXRpbWVyIj4KICAgICAgPHVzZSB4bGluazpocmVmPSJpY29ucy9zdG9wd2F0Y2guc3ZnI3N0b3B3YXRjaCI+PC91c2U+CiAgICA8L3N2Zz4KICAgIDxzcGFuIGNsYXNzPSJsYWJlbCB2aXN1YWxseWhpZGRlbiI+VGltZTwvc3Bhbj4KICAgIDxzcGFuIGNsYXNzPSJ2YWx1ZSI+CiAgICAgIHt7I2V4cG9zdXJlfX0KICAgICAgICB7e3RpbWV9fTxzcGFuIGNsYXNzPSJ1bml0Ij57e3VuaXR9fTwvc3Bhbj4KICAgICAge3svZXhwb3N1cmV9fQogICAgPC9zcGFuPgogIDwvZGl2PgogIDxkaXYgY2xhc3M9ImNvbXBvbmVudCI+CiAgICA8YnV0dG9uIG9uLWNsaWNrPSJjaGFuZ2VJc286IHt7aXNvSW5kZXggLSAxfX0iPiZsdDs8L2J1dHRvbj4KICAgIDxzcGFuIGNsYXNzPSJsYWJlbCBpc28iPklTTzwvc3Bhbj4KICAgIDxzcGFuIGNsYXNzPSJ2YWx1ZSI+e3tpc299fTwvc3Bhbj4KICAgIDxidXR0b24gb24tY2xpY2s9ImNoYW5nZUlzbzoge3tpc29JbmRleCArIDF9fSI+Jmd0OzwvYnV0dG9uPgogIDwvZGl2PgogIDxkaXYgY2xhc3M9ImNvbXBvbmVudCI+CiAgICA8c3BhbiBjbGFzcz0ibGFiZWwgdmlzdWFsbHloaWRkZW4iPkxpZ2h0Ojwvc3Bhbj4KICAgIDxzcGFuIGNsYXNzPSJ2YWx1ZSI+e3sgY29uZGl0aW9ucy5uYW1lIH19PC9zcGFuPgogICAgPGRpdiBjbGFzcz0iYmFyIj4KICAgICAgPGRpdiBjbGFzcz0iYmFyLW91dGVyIj4KICAgICAgICA8ZGl2IHN0eWxlPSJ3aWR0aDoge3sgbGlnaHRMZXZlbFBlcmNlbnQgfX0lIiBjbGFzcz0iYmFyLWlubmVyIj48L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJjcmVkaXRzIj4KICAgIDxoMj5JY29uczwvaDI+CiAgICA8cD5TdG9wd2F0Y2ggYnkgRWR3YXJkIEJvYXRtYW4gZnJvbSB0aGUgTm91biBQcm9qZWN0PC9wPgogIDwvZGl2Pgo8L2Rpdj4K","base64").toString();
+var defaultTemplate = Buffer("PGRpdiBjbGFzcz0idWkiIHN0eWxlPSJiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCB7e2NvbmRpdGlvbnMuY29sb3VyLnN0YXJ0fX0sIHt7Y29uZGl0aW9ucy5jb2xvdXIuc3RvcH19KTsiPgogIHt7I2Vycm9yfX0KICAgIHt7bXNnfX0KICB7ey99fQogIHt7XmVycm9yfX0KICA8ZGl2IGNsYXNzPSJjb21wb25lbnQiPgogICAgPHN2ZyBjbGFzcz0iaWNvbi10aW1lciI+CiAgICAgIDx1c2UgeGxpbms6aHJlZj0iaWNvbnMvc3RvcHdhdGNoLnN2ZyNzdG9wd2F0Y2giPjwvdXNlPgogICAgPC9zdmc+CiAgICA8c3BhbiBjbGFzcz0ibGFiZWwgdmlzdWFsbHloaWRkZW4iPlRpbWU8L3NwYW4+CiAgICA8c3BhbiBjbGFzcz0idmFsdWUiPgogICAgICB7eyNleHBvc3VyZX19CiAgICAgICAge3t0aW1lfX08c3BhbiBjbGFzcz0idW5pdCI+e3t1bml0fX08L3NwYW4+CiAgICAgIHt7L2V4cG9zdXJlfX0KICAgIDwvc3Bhbj4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJjb21wb25lbnQiPgogICAgPGJ1dHRvbiBvbi1jbGljaz0iY2hhbmdlSXNvOiB7e2lzb0luZGV4IC0gMX19Ij4mbHQ7PC9idXR0b24+CiAgICA8c3BhbiBjbGFzcz0ibGFiZWwgaXNvIj5JU088L3NwYW4+CiAgICA8c3BhbiBjbGFzcz0idmFsdWUiPnt7aXNvfX08L3NwYW4+CiAgICA8YnV0dG9uIG9uLWNsaWNrPSJjaGFuZ2VJc286IHt7aXNvSW5kZXggKyAxfX0iPiZndDs8L2J1dHRvbj4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJjb21wb25lbnQiPgogICAgPHNwYW4gY2xhc3M9ImxhYmVsIHZpc3VhbGx5aGlkZGVuIj5MaWdodDo8L3NwYW4+CiAgICA8c3BhbiBjbGFzcz0idmFsdWUiPnt7IGNvbmRpdGlvbnMubmFtZSB9fTwvc3Bhbj4KICAgIDxkaXYgY2xhc3M9ImJhciI+CiAgICAgIDxkaXYgY2xhc3M9ImJhci1vdXRlciI+CiAgICAgICAgPGRpdiBzdHlsZT0id2lkdGg6IHt7IGxpZ2h0TGV2ZWxQZXJjZW50IH19JSIgY2xhc3M9ImJhci1pbm5lciI+PC9kaXY+CiAgICAgIDwvZGl2PgogICAgPC9kaXY+CiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0iY3JlZGl0cyI+CiAgICA8aDI+SWNvbnM8L2gyPgogICAgPHA+U3RvcHdhdGNoIGJ5IEVkd2FyZCBCb2F0bWFuIGZyb20gdGhlIE5vdW4gUHJvamVjdDwvcD4KICA8L2Rpdj4KICB7ey99fQo8L2Rpdj4K", "base64").toString();
 
 var Widget = function Widget(template, useDefaults) {
   var self = this;
