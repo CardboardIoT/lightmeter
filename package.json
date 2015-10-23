@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "browser": "static/src/index.js",
+  "browserify": {
+    "transform": [
+      "brfs",
+      "babelify"
+    ]
+  },
   "scripts": {
     "start": "node arduino",
     "static": "node static-server.js",
@@ -17,8 +24,8 @@
   "author": "Andrew Nicolaou <me@andrewnicolaou.co.uk>",
   "license": "ISC",
   "dependencies": {
-    "beefy": "^2.1.5",
     "brfs": "^1.4.1",
+    "browserify-middleware": "^7.0.0",
     "config": "~1.16.0",
     "debug": "~2.2.0",
     "es6-promise": "~3.0.2",
