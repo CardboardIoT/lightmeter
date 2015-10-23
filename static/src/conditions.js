@@ -1,5 +1,6 @@
 var d3Scale  = require('d3-scale'),
-    lodash = require('lodash');
+    lodash = require('lodash'),
+    EventEmitter = require('events').EventEmitter;
 
 var defaults = [
   {
@@ -94,27 +95,31 @@ module.exports.defaults = defaults;
 
 module.exports.create = function () {
   this.scale = createScale();
-  return {
-    add: function (condition) {
-      conditions.push(condition);
-      this.scale = createScale();
-    },
-    info: function (lightLevel) {
-      var id = this.scale(lightLevel);
-      return lodash.find(conditions, { id: id });
-    },
-    availableIso: function () {
-      var available = [];
+  var instance = new EventEmitter();
 
-      if (conditions[0] && conditions[0].exposure) {
-        available = lodash(conditions[0].exposure)
-                .keys()
-                .map(lodash.parseInt)
-                .sortBy()
-                .value();
-      }
-
-      return available;
-    }
+  instance.add = function (condition) {
+    conditions.push(condition);
+    this.scale = createScale();
+    this.emit('change');
   };
+
+  instance.info = function (lightLevel) {
+    var id = this.scale(lightLevel);
+    return lodash.find(conditions, { id: id });
+  };
+
+  instance.availableIso = function () {
+    var available = [];
+
+    if (conditions[0] && conditions[0].exposure) {
+      available = lodash(conditions[0].exposure)
+              .keys()
+              .map(lodash.parseInt)
+              .sortBy()
+              .value();
+    }
+
+    return available;
+  };
+  return instance;
 }

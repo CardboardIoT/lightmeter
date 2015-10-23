@@ -7,6 +7,8 @@ module.exports.create = function (template, conditions) {
     el: '#container',
     template: template || '',
     oninit: function ( options ) {
+      var self = this;
+
       this.on('changeIso', function (evt, index) {
         var available = this.get('availableIso'),
             lastIndex = available.length - 1,
@@ -16,13 +18,20 @@ module.exports.create = function (template, conditions) {
         this.set('iso', next);
       });
 
-      if (this.get('iso') == null) {
-        this.set('iso', this.get('availableIso')[0]);
-      }
+      this.observe('availableIso', function () {
+        if (this.get('iso') == null) {
+          this.set('iso', this.get('availableIso')[0]);
+        }
+      });
+
+      conditions.on('change', function () {
+        console.log('conditions have changed')
+        self.set('availableIso', conditions.availableIso());
+      });
     },
     data: {
       iso: null,
-      availableIso: conditions.availableIso(),
+      availableIso: [],
       lightLevelRaw: null
     },
     computed: {
