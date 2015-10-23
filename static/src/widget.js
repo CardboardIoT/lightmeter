@@ -1,9 +1,15 @@
+var fs = require('fs');
+
 var ui = require('./ui'),
     conditions = require('./conditions');
+
+var defaultTemplate = fs.readFileSync(__dirname + '/../ui.tmpl').toString();
 
 var Widget = function (template, useDefaults) {
   var self = this;
   self.conditions = conditions.create();
+
+  self.template = template || defaultTemplate;
 
   // Prepoulate with default conditions
   if (useDefaults === true) {
@@ -12,7 +18,7 @@ var Widget = function (template, useDefaults) {
     });
   }
 
-  self.ui = ui.create(template || '', self.conditions);
+  self.ui = ui.create(self.template, self.conditions);
 }
 
 Widget.prototype.setLightLevel = function (value) {

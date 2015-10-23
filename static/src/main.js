@@ -1,33 +1,38 @@
-var mqtt    = require('mqtt'),
-    Promise = require('es6-promise').Promise,
-    url     = require('url');
+var mqtt    = require('mqtt');
 
-var Widget = require('./widget');
+var LightMeterWidget = require('./widget');
 
 // WHAT-WG Fetch API polyfill
 require('whatwg-fetch');
 
-// Start
-init();
+fetchConfig()
+  .then(init)
+  .catch(console.error.bind(console));
 
-function init() {
-  Promise.all([
-    fetchTemplateAndInitUi(),
-    fetchConfigAndCreateClient()
-  ])
-    .then(function (params) {
-      var widget = params[0],
-          client = params[1];
-      subscribeMessagesToUi(widget, client);
-    })
-    .catch(function (err) {
-      console.error(err);
-    });
-}
+function init(config) {
+  console.log('init', config);
 
-function fetchConfigAndCreateClient() {
-  return fetchConfig()
-    .then(createClientAndSubscribe);
+  var lightTopic = 'ciot/lightmeter/value';
+
+  var lightMeter = new LightMeterWidget(null, true /* use default conditions */);
+
+  var client  = mqtt.connect({
+    hostname: config.brokerUi.hostname,
+    protocol: config.brokerUi.protocol,
+    port: config.brokerUi.port
+  });
+
+  client.on('connect', function () {
+    client.subscribe(lightTopic);
+  });
+
+  client.on('message', function (topic, payload) {
+    var message = payload.toString();
+    if (topic === lightTopic) {
+      lightMeter.setLightLevel(message);
+    }
+  });
+
 }
 
 function fetchConfig() {
@@ -35,50 +40,4 @@ function fetchConfig() {
     .then(function (res) {
       return res.json();
     });
-}
-
-function createClientAndSubscribe(config) {
-  var topic = '#',
-      brokerUrl = url.format({
-        protocol: config.brokerUi.protocol,
-        hostname: config.brokerUi.hostname,
-        port: config.brokerUi.port
-      });
-  console.log('brokerUrl', brokerUrl);
-  return new Promise(function(resolve, reject) {
-    var client = mqtt.connect(brokerUrl);
-    client.on('connect', function () {
-      resolve(client);
-    });
-  });
-}
-
-function fetchTemplateAndInitUi() {
-  return fetchTemplate()
-    .then(initUiWithTemplate)
-    .then(function (widget) {
-      window.widget = widget;
-      return widget;
-    });
-}
-
-function fetchTemplate() {
-  return fetch('ui.tmpl')
-    .then(function (res) {
-      return res.text();
-    });
-}
-
-function initUiWithTemplate(template) {
-  return new Widget(template, true /* add default conditions */);
-}
-
-function subscribeMessagesToUi(widget, client) {
-  var lightLevelTopic = 'ciot/lightmeter/value';
-  client.subscribe(lightLevelTopic);
-  client.on('message', function (topic, msg) {
-    if (lightLevelTopic === topic) {
-      widget.setLightLevel(msg.toString());
-    }
-  });
 }
