@@ -32,9 +32,7 @@
     "express": "^4.13.3",
     "johnny-five": "0.8",
     "lodash": "~3.10.1",
-    "mqtt": "~1.4.3"
-  },
-  "devDependencies": {
+    "mqtt": "~1.4.3",
     "autoprefixer": "^6.0.3",
     "babelify": "~6.3.0",
     "browserify": "~11.2.0",
@@ -48,5 +46,7 @@
     "ractive": "^0.7.3",
     "watchify": "~3.4.0",
     "whatwg-fetch": "^0.10.0"
+  },
+  "devDependencies": {
   }
 }
