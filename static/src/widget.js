@@ -22,7 +22,7 @@ var Widget = function (template, useDefaults) {
 }
 
 Widget.prototype.setLightLevel = function (value) {
-  this.ui.animate('lightLevelRaw', value);
+  this.ui.animate('lightLevel', parseFloat(value) );
 }
 
 Widget.prototype.addLightingCondition = function (spec) {

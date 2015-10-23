@@ -32,11 +32,11 @@ module.exports.create = function (template, conditions) {
     data: {
       iso: null,
       availableIso: [],
-      lightLevelRaw: null
+      lightLevel: null
     },
     computed: {
       error: function () {
-        var hasLight = this.get('lightLevelRaw') != null,
+        var hasLight = this.get('lightLevel') != null,
             hasIso = this.get('iso') != null;
 
         if (!hasLight) {
@@ -61,10 +61,10 @@ module.exports.create = function (template, conditions) {
       },
       exposure: function () {
         var timeSecs = this.get('timeSecs');
-        return timeSecs ? time.splitIntoParts(timeSecs) : null;
+        return timeSecs != null ? time.splitIntoParts(timeSecs) : null;
       },
-      lightLevel: function () {
-        return this.get('lightLevelRaw');
+      lightLevelFormatted: function() {
+        return this.get('lightLevel').toFixed(2);
       },
       lightLevelPercent: function () {
         return Math.floor(

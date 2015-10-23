@@ -16,7 +16,8 @@ var defaults = [
     colour: {
       start: '#f7ec86',
       stop : '#fdc753'
-    }
+    },
+    sensorRange: [0.8, 1]
   },
   {
     id: 'partial-cloud',
@@ -31,7 +32,8 @@ var defaults = [
     colour: {
       start: '#f4e884',
       stop : '#60c084'
-    }
+    },
+    sensorRange: [0.6, 0.8]
   },
   {
     id: 'cloudy',
@@ -46,7 +48,8 @@ var defaults = [
     colour: {
       start: '#70c488',
       stop : '#20bcfc'
-    }
+    },
+    sensorRange: [0.4, 0.6]
   },
   {
     id: 'indoors',
@@ -61,7 +64,8 @@ var defaults = [
     colour: {
       start: '#27bbf4',
       stop : '#6340bc'
-    }
+    },
+    sensorRange: [0.2, 0.4]
   },
   {
     id: 'evening',
@@ -76,18 +80,39 @@ var defaults = [
     colour: {
       start: '#977bd7',
       stop : '#f75892'
-    }
+    },
+    sensorRange: [0, 0.2]
   }
 ];
 
 var conditions = [],
     scale;
 
+/*
+  This computes a polylinear scale
+  This allows light values to be mapped unevenly
+  to lighting condition ids.
+
+  e.g. [0, 0.7, 1] -> ['sunny', 'dark']
+       Values between 0 - 0.69999 will map to 'sunny'
+       and values between 0.7 - 1 will map to 'dark'
+*/
 function createScale() {
-  var range = lodash.pluck(conditions, 'id').reverse();
+  var domain, range;
+
+  domain = lodash(conditions)
+    .pluck('sensorRange')
+    .flatten()
+    .uniq()
+    .value();
+
+  range = lodash(conditions)
+    .pluck('id')
+    .value();
+
   return d3Scale
-    .quantize()
-    .domain([0, 1023])
+    .quantile()
+    .domain(domain)
     .range(range);
 }
 
@@ -99,6 +124,8 @@ module.exports.create = function () {
 
   instance.add = function (condition) {
     conditions.push(condition);
+    conditions = lodash.sortBy(conditions, 'sensorRange');
+
     this.scale = createScale();
     this.emit('change');
   };
