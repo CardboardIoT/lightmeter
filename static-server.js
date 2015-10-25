@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
   A super-simple static server to
   host UI files
@@ -31,5 +33,19 @@ module.exports = serve;
 
 // If run directly from command line start server
 if (require.main === module) {
-  serve(process.env.PORT || 3000, './static/src/main.js');
+  var args = require('minimist')(process.argv, {
+    boolean: 'help',
+    alias: { 'h': 'help' }
+  });
+
+  if (args.help) {
+    console.log('lightmeter [--port PORT] <entry script>');
+    console.log('\n  Starts a local webserver to serve lightmeter widget\n');
+    process.exit();
+  }
+
+  var entryPoint = args._[2] || './static/src/main.js',
+      port = args.port || process.env.PORT || 3000;
+
+  serve(port, entryPoint);
 }
