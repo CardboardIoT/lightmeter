@@ -1,7 +1,8 @@
 {
   "name": "lightmeter",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple LightMeter UI widget for pinhole cameras",
+  "homepage": "https://github.com/CardboardIoT/lightmeter",
   "main": "index.js",
   "browser": "static/src/index.js",
   "browserify": {
@@ -24,7 +25,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andrew Nicolaou <me@andrewnicolaou.co.uk>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "autoprefixer": "^6.0.3",
     "babelify": "~6.3.0",
