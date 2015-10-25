@@ -45,7 +45,7 @@ if (require.main === module) {
     process.exit();
   }
 
-  var entryPoint = args._[2] || './static/src/main.js',
+  var entryPoint = args._[2] ||  __dirname + '/static/src/main.js',
       port = args.port || process.env.PORT || 3000;
 
   serve(port, entryPoint);
