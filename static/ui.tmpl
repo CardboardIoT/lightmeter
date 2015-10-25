@@ -18,7 +18,12 @@
     <button on-click="changeIso: {{isoIndex + 1}}">&gt;</button>
   </div>
   {{/}}
+
   <div class="component">
+    {{^lightLevel}}
+      <p class="msg">No light level set</p>
+    {{/}}
+    {{#lightLevel}}
     <span class="label visuallyhidden">Light:</span>
     <span class="value">{{ conditions.name }} ({{ lightLevelFormatted }})</span>
     <div class="bar">
@@ -26,6 +31,7 @@
         <div style="width: {{ lightLevelPercent }}%" class="bar-inner"></div>
       </div>
     </div>
+    {{/}}
   </div>
   <div class="credits">
     <h2>Icons</h2>

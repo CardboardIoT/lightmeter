@@ -15,7 +15,6 @@ body {
   width: 100vw;
 }
 
-
 .component {
   box-sizing: border-box;
   font-size: 4rem;
@@ -23,6 +22,10 @@ body {
   line-height: 30vh;
   padding: 2vh;
   text-align: center;
+}
+
+.msg {
+  font-size: 4rem;
 }
 
 .unit {
