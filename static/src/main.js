@@ -6,7 +6,8 @@ var config = require('../../config/default.json'),
 init();
 
 function init() {
-  var lightTopic = 'ciot/pinhole/light/value';
+  var id = process.env.ID;
+  var lightTopic = 'ciot/pinhole/' + (id ? id + '/' : '') + 'light/value';
 
   var lightMeter = new LightMeterWidget();
   lightMeter.addLightingCondition(LightMeterWidget.defaults);

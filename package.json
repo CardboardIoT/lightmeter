@@ -7,7 +7,8 @@
   "browserify": {
     "transform": [
       "brfs",
-      "babelify"
+      "babelify",
+      "envify"
     ]
   },
   "bin": {
@@ -32,6 +33,7 @@
     "browserify-middleware": "^7.0.0",
     "config": "~1.16.0",
     "d3-scale": "^0.1.2",
+    "envify": "^3.4.0",
     "es6-promise": "~3.0.2",
     "express": "^4.13.3",
     "lodash": "^3.10.1",
