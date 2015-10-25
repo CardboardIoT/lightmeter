@@ -22,7 +22,8 @@ function serve(port, entryPoint, opts) {
     var port = server.address().port;
 
     if (opts.quiet === false) {
-      console.log('Static server listening at http://%s:%s', host, port);
+      console.log('\nVisit http://localhost:' + port + ' in your browser to view your UI');
+      console.log('Press Ctl+C to stop the server');
     }
   });
   return server;
