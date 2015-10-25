@@ -6,11 +6,10 @@ var config = require('../../config/default.json'),
 init();
 
 function init() {
-  console.log('init', config);
-
   var lightTopic = 'ciot/pinhole/light/value';
 
-  var lightMeter = new LightMeterWidget(null, true /* use default conditions */);
+  var lightMeter = new LightMeterWidget();
+  lightMeter.addLightingCondition(LightMeterWidget.defaults);
 
   var client  = mqtt.connect({
     hostname: config.brokerUi.hostname,

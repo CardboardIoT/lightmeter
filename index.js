@@ -1,5 +1,5 @@
 
 module.exports = {
   Widget: require('./static/src/widget'),
-  serve: require('./static-server')
+  serve: require('./lightmeter')
 };

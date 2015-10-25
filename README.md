@@ -1,39 +1,18 @@
 # lightmeter
 
-A simple Arduino lightmeter and web UI.
+A simple browser-based light meter widget.
 
 ## Install
 
     1. Clone this repo
     2. npm install
 
-Tested with node.js v0.12. You may have problems with v4 and native modules.
-
-Flash your Arduino with Standard Firmata, found in the Arduino IDE: `File -> Examples -> Firmata -> StandardFirmata`.
-
-## Circuit
-
-### Arduino
-
-Wire up your Arduino exactly as in [this diagram](https://github.com/rwaldron/johnny-five/blob/master/docs/photoresistor.md):
-
-![https://github.com/rwaldron/johnny-five/raw/master/docs/breadboard/photoresistor.png](https://github.com/rwaldron/johnny-five/blob/master/docs/breadboard/photoresistor.png)<br>
-
-Fritzing diagram: [https://github.com/rwaldron/johnny-five/blob/master/docs/breadboard/photoresistor.fzz](https://github.com/rwaldron/johnny-five/blob/master/docs/breadboard/photoresistor.fzz)
+Tested with node.js v0.12.
 
 ## Run
 
-There are two parts:
+This widget can spin-up a simple web server serving the UI.
 
-1. receiver for data from the microcontroller and publishing to MQTT
-2. web UI listening to the MQTT broker over WebSockets and displays a UI
+    ./lightmeter [--port <port>]
 
-Start the receiver:
-
-    npm start
-
-Start a static server for the web UI:
-
-    npm run static
-
-View the web UI at [http://localhost:3000/].
+Visit [http://localhost:<port>]() in your browser to view the widget.

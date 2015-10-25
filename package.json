@@ -11,11 +11,9 @@
     ]
   },
   "bin": {
-    "lightmeter": "./static-server.js"
+    "lightmeter": "./lightmeter.js"
   },
   "scripts": {
-    "start": "node arduino",
-    "static": "node static-server.js",
     "build": "npm run build-js && npm run build-css",
     "watch": "echo 'Run \"npm run watch-js\" and \"npm run watch-css\" in seperate tabs'",
     "build-js": "browserify static/src/main.js -t brfs -t babelify --outfile static/bundle.js",
@@ -34,10 +32,8 @@
     "browserify-middleware": "^7.0.0",
     "config": "~1.16.0",
     "d3-scale": "^0.1.2",
-    "debug": "~2.2.0",
     "es6-promise": "~3.0.2",
     "express": "^4.13.3",
-    "johnny-five": "0.8",
     "lodash": "^3.10.1",
     "minimist": "^1.2.0",
     "moment": "^2.10.6",
@@ -47,8 +43,7 @@
     "postcss-cli": "^2.2.0",
     "postcss-import": "^7.1.0",
     "ractive": "^0.7.3",
-    "watchify": "~3.4.0",
-    "whatwg-fetch": "^0.10.0"
+    "watchify": "~3.4.0"
   },
   "devDependencies": {}
 }
