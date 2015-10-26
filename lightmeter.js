@@ -13,7 +13,13 @@ function serve(port, entryPoint, opts) {
 
   var app = express();
 
-  app.get('/bundle.js', browserify(entryPoint));
+  app.get('/bundle.js', browserify(entryPoint, {
+    transform: [
+      "brfs",
+      "babelify",
+      "envify"
+    ]
+  }));
 
   app.use(express.static(__dirname + '/static'));
 
