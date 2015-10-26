@@ -1,6 +1,6 @@
 {
   "name": "lightmeter",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple LightMeter UI widget for pinhole cameras",
   "homepage": "https://github.com/CardboardIoT/lightmeter",
   "main": "index.js",

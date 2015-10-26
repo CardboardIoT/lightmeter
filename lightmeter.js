@@ -15,9 +15,9 @@ function serve(port, entryPoint, opts) {
 
   app.get('/bundle.js', browserify(entryPoint, {
     transform: [
-      "brfs",
-      "babelify",
-      "envify"
+      require("brfs"),
+      require("babelify"),
+      require("envify")
     ]
   }));
 
